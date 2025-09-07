@@ -1,6 +1,5 @@
 import { app, BrowserWindow } from 'electron'
 import { join } from 'node:path'
-import { pathToFileURL } from 'node:url'
 
 const isDev = !!process.env.VITE_DEV_SERVER_URL
 
@@ -23,8 +22,7 @@ async function createWindow() {
     await win.loadURL(process.env.VITE_DEV_SERVER_URL)
     win.webContents.openDevTools({ mode: 'detach' })
   } else {
-    const indexHtml = pathToFileURL(join(process.resourcesPath, 'dist/renderer/index.html')).toString()
-    await win.loadURL(indexHtml)
+    await win.loadFile(join(process.resourcesPath, 'dist/renderer/index.html'))
   }
 }
 
@@ -38,4 +36,3 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
-
